@@ -25,9 +25,9 @@ class contact:
         return self.name
     
 contacts = []
-# khanh = contact('khanh','0347708169', 'tam hiep', 'khanh9102004@gmail.com')
-# chi = contact('chi','1234567899', 'tu hiep', 'mailinhchi2107@gmail.com')
-# contacts.extend([khanh,chi])
+khanh = contact('khanh','0347708169', 'tam hiep', 'khanh9102004@gmail.com')
+chi = contact('chi','1234567899', 'tu hiep', 'mailinhchi2107@gmail.com')
+contacts.extend([khanh,chi])
 print('''
 hay chon dich vu :
 1. xem toan bo danh sach
