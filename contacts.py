@@ -1,4 +1,4 @@
-class contact:
+class Contact:
     def __init__(self,name,number,address = '',email = ''):
         self.name = name
         self.number = number
@@ -25,8 +25,8 @@ class contact:
         return self.name
     
 contacts = []
-khanh = contact('khanh','0347708169', 'tam hiep', 'khanh9102004@gmail.com')
-chi = contact('chi','1234567899', 'tu hiep', 'mailinhchi2107@gmail.com')
+khanh = Contact('khanh','0347708169', 'tam hiep', 'khanh9102004@gmail.com')
+chi = Contact('chi','1234567899', 'tu hiep', 'mailinhchi2107@gmail.com')
 contacts.extend([khanh,chi])
 print('''
 hay chon dich vu :
@@ -70,7 +70,7 @@ while True:
         sdt = input('moi ban nhap sdt: ')
         address = input('moi ban nhap dia chi: ')
         email = input('moi ban nhap email: ')
-        name = contact(name,sdt,address,email) 
+        name = Contact(name,sdt,address,email) 
         contacts.append(name)
     elif service == 4:
         deleteContact = input('nhap ten nguoi muon xoa: ')
