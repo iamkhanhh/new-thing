@@ -20,6 +20,8 @@ def speaker(eng):
     engine = pyttsx3.init()
     engine.say(eng)
     engine.runAndWait()
+    rate = engine.getProperty('rate') 
+    engine.setProperty('rate', 150)
 
 def add_word(eng, vie):
     with open('C:\\Users\\Admin\\Dict.txt', 'a', encoding='utf-8') as f:
