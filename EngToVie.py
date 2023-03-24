@@ -101,13 +101,13 @@ def search_word():
         num = 0
         for index in range(len(dataset)):
             lst = dataset[index].strip().split()
-            if en_sentence == lst[0]:
+            if en_sentence.lower() == lst[0].lower():
                 print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
                 is_found = True
                 is_exactly = True
                 word_to_speak = en_sentence
                 break
-            elif en_sentence == lst[0][0]:
+            elif en_sentence.lower() == lst[0][0].lower():
                 print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
                 is_found = True
                 num += 1
