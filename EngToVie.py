@@ -6,58 +6,77 @@
 import os
 import sys
 import time
+import random
 from IPython.display import clear_output
 def clear_screen():
     os.system('cls')
     clear_output()
 print("Đang kiểm tra yêu cầu phần mềm, vui lòng đợi ...")
-try:
-    import pyttsx3
-except:
-    print("Lỗi: thiếu thư viện pyttsx3")
-    time.sleep(2)
-    print('Đang tải thư viện pyttsx3')
-    !{sys.executable} -m pip install pyttsx3
-    time.sleep(1)
-    clear_screen()
-    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
-    time.sleep(2)
+# try:
+#     import pyttsx3
+# except:
+#     print("Lỗi: thiếu thư viện pyttsx3")
+#     time.sleep(2)
+#     print('Đang tải thư viện pyttsx3')
+#     !{sys.executable} -m pip install pyttsx3
+#     time.sleep(1)
+#     clear_screen()
+#     print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+#     time.sleep(2)
 
-try:
-    from pynput import keyboard
-except:
-    print("Lỗi: thiếu thư viện pynput")
-    time.sleep(2)
-    print('Đang tải thư viện pynput')
-    !{sys.executable} -m pip install pynput
-    time.sleep(1)
-    clear_screen()
-    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
-    time.sleep(2)
+# try:
+#     from pynput import keyboard
+# except:
+#     print("Lỗi: thiếu thư viện pynput")
+#     time.sleep(2)
+#     print('Đang tải thư viện pynput')
+#     !{sys.executable} -m pip install pynput
+#     time.sleep(1)
+#     clear_screen()
+#     print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+#     time.sleep(2)
     
-try:
-    from googletrans import Translator
-except:
-    print("Lỗi: thiếu thư viện googletrans")
-    time.sleep(2)
-    print('Đang tải thư viện googletrans')
-    !{sys.executable} -m pip install googletrans
-    time.sleep(1)
-    clear_screen()
-    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
-    time.sleep(2)
+# try:
+#     from googletrans import Translator
+# except:
+#     print("Lỗi: thiếu thư viện googletrans")
+#     time.sleep(2)
+#     print('Đang tải thư viện googletrans')
+#     !{sys.executable} -m pip install googletrans
+#     time.sleep(1)
+#     clear_screen()
+#     print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+#     time.sleep(2)
     
-try:
-    import speech_recognition as sr
-except:
-    print("Lỗi: thiếu thư viện speech_recognition")
-    time.sleep(2)
-    print('Đang tải thư viện speech_recognition')
-    !{sys.executable} -m pip install speech_recognition
-    time.sleep(1)
-    clear_screen()
-    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
-    time.sleep(2)
+# try:
+#     import speech_recognition as sr
+# except:
+#     print("Lỗi: thiếu thư viện speech_recognition")
+#     time.sleep(2)
+#     print('Đang tải thư viện speech_recognition')
+#     !{sys.executable} -m pip install speech_recognition
+#     time.sleep(1)
+#     clear_screen()
+#     print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+#     time.sleep(2)
+
+def pip_install(package):
+    try:
+        __import__(package)
+    except ImportError:
+        print(f"Lỗi: thiếu thư viện {package}")
+        time.sleep(2)
+        print(f"Đang tải thư viện {package}")
+        !{sys.executable} -m pip install {package}
+        time.sleep(1)
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"Đã tải xong thư viện {package}, tiếp tục trong giây lát...")
+        time.sleep(2)
+
+pip_install("pyttsx3")
+pip_install("pynput")
+pip_install("googletrans")
+pip_install("speech_recognition")
 
 def showMenu():
     print(
@@ -69,7 +88,8 @@ Mời bạn chọn chức năng :
 3. Sửa từ điển
 4. Dịch văn bản
 5. Danh sách từ đã lưu
-6. Kết thúc tra cứu
+6. Kiểm tra từ mới
+7. Kết thúc tra cứu
 """)
     print()
     choice = int(input('Nhập chức năng người dùng : '))
@@ -220,6 +240,8 @@ def showDict(file = 'Dict.txt'):
 def search_word(file = 'Dict.txt'):
     with open(file, 'r', encoding='utf-8') as f:
         dataset = f.readlines()
+        # Process input from console
+        # print_dict(dataset)
         while True:
             
             en_sentence = input('Hãy nhập từ cần tra hoặc -1 để thoát: ')
@@ -233,22 +255,20 @@ def search_word(file = 'Dict.txt'):
             for index in range(len(dataset)):
                 lst = dataset[index].strip().split()
                 if en_sentence.lower() == lst[0].lower():
-                    print("{:<10} : {:<12}".format(lst[0], " ".join(lst[1:])))
+                    print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
                     is_found = True
                     is_exactly = True
                     word_to_speak = en_sentence
                     meaning_word = " ".join(lst[1:])
                     break
-            if not is_exactly: 
-                for index in range(len(dataset)):
-                    lst = dataset[index].strip().split()
-                    if en_sentence.lower() in lst[0].lower():
-                        print("{:<10} : {:<12}".format(lst[0], " ".join(lst[1:])))
-                        is_found = True
-                        num += 1
-                        if num == 1:
-                            word_to_speak = lst[0]
-                            meaning_word = " ".join(lst[1:])
+                    
+                elif en_sentence.lower() in lst[0].lower():
+                    print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
+                    is_found = True
+                    num += 1
+                    if num == 1:
+                        word_to_speak = lst[0]
+                        meaning_word = " ".join(lst[1:])
 
             if not is_found:
                 print('Khong tim thay ! Vui long nhap lai !')
@@ -389,7 +409,6 @@ def isRecog():
         elif transMode == 3:
             return -1
     
-
 def voice_recog(lang):
 #     lang: "vi-Vn" or "en-US"
     # Create a recognizer object
@@ -410,7 +429,80 @@ def voice_recog(lang):
         print(f"Could not request results from Google Speech Recognition service; {e}")
         
     return text
-         
+
+def eng_to_vie_wordRevision():
+    clear_screen()
+    print("""
+    1. Kho từ điển
+    2. Kho từ đã lưu
+    3. Quay về
+    """)
+    group = int(input("Lựa chọn phương thức: "))
+    if group == 1:
+        with open("Dict.txt", "r", encoding="utf-8") as f:
+            dataset = f.readlines()
+    elif group == 2:
+        with open("SavedDict.txt", "r", encoding="utf-8") as f:
+            dataset = f.readlines()
+            if dataset < 4:
+                print("Số lượng từ dưới 4, hãy chọn thêm từ để bắt đầu")
+                print("Đang về menu ...")
+                time.sleep(3)
+                return
+    elif group == 3:
+        return
+    #datadet = []
+    clear_screen()
+    Qnum = int(input("Nhập số câu bạn muốn luyện: "))
+    ABCD_to_int = {"A": 0, "B": 1, "C": 2, "D": 3}
+    random.shuffle(dataset)
+    question_data = [i.split(" ")[0] for i in dataset]
+    random.shuffle(question_data[1:])
+    count_correct = 0
+    wrongAns = {}
+    for i in range(Qnum):
+        Question = dataset[i].split(" ")[0]
+        CorrectAn= " ".join(dataset[i].split(" ")[1:]).replace("\n","")
+        FAsnwer1 = " ".join(dataset[i+1].split(" ")[1:]).replace("\n","")
+        FAsnwer2 = " ".join(dataset[i+2].split(" ")[1:]).replace("\n","")
+        FAsnwer3 = " ".join(dataset[i+3].split(" ")[1:]).replace("\n","")
+        ABCD = [CorrectAn, FAsnwer1, FAsnwer2, FAsnwer3]
+        random.shuffle(ABCD)
+        print(f"Câu hỏi {i+1}: {Question}")
+        print("A.{:<10} B.{:<10} C.{:<10} D.{:<10} ".format(*ABCD))
+        choice = input("Chọn đáp án đúng: ").capitalize()
+        choice = ABCD_to_int[choice]
+        if choice == ABCD.index(CorrectAn):
+            count_correct += 1
+        else: wrongAns[i+1]= [Question, ABCD[choice], CorrectAn]
+    if count_correct - Qnum != 0:
+        clear_screen()
+        print(f"Bạn đã trả lời đúng {count_correct}/{Qnum} câu hỏi")
+        print("Bạn đã chọn sai các câu hỏi sau")
+        for i in wrongAns:
+            print(f"Câu {i} từ '{wrongAns[i][0]}' bạn đã chọn '{wrongAns[i][1]}'")
+            print(f"Đáp án đúng: {wrongAns[i][2]}")
+    else: print(f"Bạn đã trả lời đúng {count_correct}/{Qnum} câu hỏi\nXin chúc mừng")
+    input("Nhấn phím bất kỳ để tiếp tục")
+
+def wordRevisionMenu():
+    while True:
+        clear_screen()
+        print("""Chọn chức năng:
+1. Câu hỏi tiếng Anh
+2. Câu hỏi tiếng Việt
+3. Quay về""")
+        choice = int(input("Nhập lựa chọn: "))
+        if choice == 1:
+            eng_to_vie_wordRevision()
+            break
+        elif choice == 2: 
+            print("Chức năng này hiện chưa có, xin lỗi vì sự bất tiện này")
+            time.sleep(2)
+            continue
+        elif choice == 3:
+            break
+
 def mainMenu():
     clear_screen()
     while True:
@@ -451,9 +543,12 @@ def mainMenu():
             #xem tu da luu
             lst_saved_word()
         elif choice == 6:
+            #luyen trac nhiem
+            wordRevisionMenu()
+        elif choice == 7:
             break
     print('Chuong trinh da dung')
-time.sleep(3)
+# time.sleep(3)
 print("Xin chào, chương trình đã hoàn tất thiết lập, khởi động sau giây lát ...")
-time.sleep(2)
+# time.sleep(2)
 mainMenu()
