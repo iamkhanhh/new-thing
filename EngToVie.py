@@ -66,9 +66,10 @@ Mời bạn chọn chức năng :
 
 1. Xem toàn bộ danh sách
 2. Tra cứu
-3. Sửa từ điển (không khuyến khích dùng)
+3. Sửa từ điển
 4. Dịch văn bản
-5. Kết thúc tra cứu
+5. Danh sách từ đã lưu
+6. Kết thúc tra cứu
 """)
     print()
     choice = int(input('Nhập chức năng người dùng : '))
@@ -83,19 +84,19 @@ def speaker(eng):
 
 def add_word(eng, vie):
     with open('Dict.txt', 'a', encoding='utf-8') as f:
-        f.write(eng + ' ' + vie + '\n')
+        f.write(eng.capitalize() + ' ' + vie + '\n')
     print('Đã thêm thành công !')
 
-def delete_word(eng):
+def delete_word(eng, file = 'Dict.txt'):
     result = []
-    with open('Dict.txt', 'r', encoding='utf-8') as f:
+    with open(file, 'r', encoding='utf-8') as f:
         lst = f.readlines()
 
         for line in lst:
             if eng.lower() not in line.lower():
                 result.append(line)
-
-    with open('Dict.txt', 'w', encoding='utf-8') as f:
+    
+    with open(file, 'w', encoding='utf-8') as f:
         for line in result:
             f.write(line)
 
@@ -156,8 +157,8 @@ def print_dict(dataset):
         print("{:<10} : {:<12}".format(lst[0], " ".join(lst[1:])))
 
 
-def showDict():
-    with open('Dict.txt', 'r', encoding='utf-8') as f:
+def showDict(file = 'Dict.txt'):
+    with open(file, 'r', encoding='utf-8') as f:
         dataset = f.readlines()
     size_ = len(dataset)//5
     lastPage = len(dataset)%5
@@ -216,8 +217,8 @@ def showDict():
         listener.join()
 
 
-def search_word():
-    with open('Dict.txt', 'r', encoding='utf-8') as f:
+def search_word(file = 'Dict.txt'):
+    with open(file, 'r', encoding='utf-8') as f:
         dataset = f.readlines()
         # Process input from console
         # print_dict(dataset)
@@ -238,6 +239,7 @@ def search_word():
                     is_found = True
                     is_exactly = True
                     word_to_speak = en_sentence
+                    meaning_word = " ".join(lst[1:])
                     break
                     
                 elif en_sentence.lower() in lst[0].lower():
@@ -246,6 +248,7 @@ def search_word():
                     num += 1
                     if num == 1:
                         word_to_speak = lst[0]
+                        meaning_word = " ".join(lst[1:])
 
             if not is_found:
                 print('Khong tim thay ! Vui long nhap lai !')
@@ -254,15 +257,49 @@ def search_word():
             
             if is_exactly or num == 1:
                 while True:
-                    
-                    listen = input('Ban co muon nghe phat am khong (co / khong) : ')
-                    if listen == 'khong':
+                    choice = int(input("Bấm 1 để lưu từ, bấm 2 để phát âm từ, bấm nút 0 để quay lại: "))
+                    if choice == 1:
+                        saveWord(word_to_speak, meaning_word)
                         clear_screen()
-                        search_word()
-                        return
-                    clear_screen()
-                    speaker(word_to_speak)
-                
+                        
+                    elif choice == 2:
+                        while True:
+                            clear_screen()
+                            speaker(word_to_speak)
+                            listen = input('Bạn có muốn nghe lại không (co / khong) : ')
+                            if listen == 'khong':
+                                clear_screen()
+                                search_word()
+                                return
+                    else: break
+
+def saveWord(word, vie):
+    with open('savedWord.txt', 'a', encoding='utf-8') as f:
+        f.write(word + ' ' + vie + '\n')
+        
+    print("Đã lưu từ")
+    time.sleep(2)
+    
+def lst_saved_word():
+    print("""
+1. Xem danh sách
+2. Tra cứu và phát âm
+3. Xóa từ
+    """)
+    choice = int(input('Hãy nhập phương thức : '))
+    if choice == 1:
+        # xem danh sach
+        try:
+            showDict('savedWord.txt')
+        except:
+            clear_screen()
+            input('Danh sách rỗng, nhấn phím bất kì để tiếp tục')
+    elif choice == 2:
+        #tra cuu
+        search_word('savedWord.txt')
+    elif choice  == 3:
+        #xoa tu
+        delete_word('savedWord.txt')
           
 def transalte_essay():
     while True:
@@ -377,6 +414,21 @@ def voice_recog(lang):
 def mainMenu():
     clear_screen()
     while True:
+        
+        result = []
+        with open('Dict.txt', 'r', encoding='utf-8') as f:
+            lst = f.readlines()
+
+            for line in lst:
+                result.append(line)
+                
+        result.sort()
+        
+        with open('Dict.txt', 'w', encoding='utf-8') as f:
+            for line in result:
+                f.write(line)
+                
+        clear_screen()
         choice = showMenu()
         clear_screen()
         if (choice == 1):
@@ -396,6 +448,9 @@ def mainMenu():
             clear_screen()
             transalte_essay()
         elif choice == 5:
+            #xem tu da luu
+            lst_saved_word()
+        elif choice == 6:
             break
     print('Chuong trinh da dung')
 time.sleep(3)
