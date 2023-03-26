@@ -220,8 +220,6 @@ def showDict(file = 'Dict.txt'):
 def search_word(file = 'Dict.txt'):
     with open(file, 'r', encoding='utf-8') as f:
         dataset = f.readlines()
-        # Process input from console
-        # print_dict(dataset)
         while True:
             
             en_sentence = input('Hãy nhập từ cần tra hoặc -1 để thoát: ')
@@ -235,20 +233,22 @@ def search_word(file = 'Dict.txt'):
             for index in range(len(dataset)):
                 lst = dataset[index].strip().split()
                 if en_sentence.lower() == lst[0].lower():
-                    print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
+                    print("{:<10} : {:<12}".format(lst[0], " ".join(lst[1:])))
                     is_found = True
                     is_exactly = True
                     word_to_speak = en_sentence
                     meaning_word = " ".join(lst[1:])
                     break
-                    
-                elif en_sentence.lower() in lst[0].lower():
-                    print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
-                    is_found = True
-                    num += 1
-                    if num == 1:
-                        word_to_speak = lst[0]
-                        meaning_word = " ".join(lst[1:])
+            if not is_exactly: 
+                for index in range(len(dataset)):
+                    lst = dataset[index].strip().split()
+                    if en_sentence.lower() in lst[0].lower():
+                        print("{:<10} : {:<12}".format(lst[0], " ".join(lst[1:])))
+                        is_found = True
+                        num += 1
+                        if num == 1:
+                            word_to_speak = lst[0]
+                            meaning_word = " ".join(lst[1:])
 
             if not is_found:
                 print('Khong tim thay ! Vui long nhap lai !')
