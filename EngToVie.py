@@ -1,11 +1,63 @@
+# !python -m pip uninstall pyttsx3 --yes 
+# !python -m pip uninstall pynput --yes 
+# !python -m pip uninstall googletrans --yes 
+# !python -m pip uninstall speech_recognition --yes 
+
 import os
+import sys
+import time
 from IPython.display import clear_output
+def clear_screen():
+    os.system('cls')
+    clear_output()
+print("Đang kiểm tra yêu cầu phần mềm, vui lòng đợi ...")
+try:
+    import pyttsx3
+except:
+    print("Lỗi: thiếu thư viện pyttsx3")
+    time.sleep(2)
+    print('Đang tải thư viện pyttsx3')
+    !{sys.executable} -m pip install pyttsx3
+    time.sleep(1)
+    clear_screen()
+    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+    time.sleep(2)
 
-import pyttsx3
-from pynput import keyboard
-from googletrans import Translator
-import speech_recognition as sr
-
+try:
+    from pynput import keyboard
+except:
+    print("Lỗi: thiếu thư viện pynput")
+    time.sleep(2)
+    print('Đang tải thư viện pynput')
+    !{sys.executable} -m pip install pynput
+    time.sleep(1)
+    clear_screen()
+    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+    time.sleep(2)
+    
+try:
+    from googletrans import Translator
+except:
+    print("Lỗi: thiếu thư viện googletrans")
+    time.sleep(2)
+    print('Đang tải thư viện googletrans')
+    !{sys.executable} -m pip install googletrans
+    time.sleep(1)
+    clear_screen()
+    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+    time.sleep(2)
+    
+try:
+    import speech_recognition as sr
+except:
+    print("Lỗi: thiếu thư viện speech_recognition")
+    time.sleep(2)
+    print('Đang tải thư viện speech_recognition')
+    !{sys.executable} -m pip install speech_recognition
+    time.sleep(1)
+    clear_screen()
+    print("Đã tải xong thư viện, tiếp tục trong giây lát...")
+    time.sleep(2)
 
 def showMenu():
     print(
@@ -40,7 +92,7 @@ def delete_word(eng):
         lst = f.readlines()
 
         for line in lst:
-            if eng not in line:
+            if eng.lower() not in line.lower():
                 result.append(line)
 
     with open('Dict.txt', 'w', encoding='utf-8') as f:
@@ -86,7 +138,6 @@ Tu {eng} : {vie} vua duoc them vao tu dien, ban co muon sua doi khong ? (co / kh
         clear_screen()
         
         eng = input('Nhap tu tieng anh can xoa : ')
-        # search_word()
         delete_word(eng)
     elif choice == 3:
         clear_screen()
@@ -210,7 +261,6 @@ def search_word():
                         search_word()
                         return
                     clear_screen()
-                    print("{:<10} {:<12}".format(lst[0], " ".join(lst[1:])))
                     speaker(word_to_speak)
                 
           
@@ -323,13 +373,7 @@ def voice_recog(lang):
         print(f"Could not request results from Google Speech Recognition service; {e}")
         
     return text
-      
-            
-def clear_screen():
-    os.system('cls')
-    clear_output()
-    
-    
+         
 def mainMenu():
     clear_screen()
     while True:
@@ -353,6 +397,8 @@ def mainMenu():
             transalte_essay()
         elif choice == 5:
             break
-
     print('Chuong trinh da dung')
+time.sleep(3)
+print("Xin chào, chương trình đã hoàn tất thiết lập, khởi động sau giây lát ...")
+time.sleep(2)
 mainMenu()
