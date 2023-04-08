@@ -32,25 +32,34 @@ def check(sample, user, timing):
     sample_lst = sample.split()
     user_lst = user.split()
     mark = 0
-    for i in range(len(user_lst)):
+    lst_check = user_lst if len(user_lst) < len(sample_lst) else sample_lst
+    for i in range(len(lst_check)):
         if user_lst[i] != sample_lst[i]:
             wrong_dict[sample_lst[i]] = user_lst[i]
         else:
             mark += 1
-    WPW = mark // (timing // 60)
-    if WPW < 60:
+    WPM = mark / (timing / 60)
+    Accuracy = round((mark / len(user_lst)) * 100, 2)
+    WPM = round(WPM, 2)
+    if WPM < 60:
         quality = 'Low level'
-    elif 60 <= WPW and WPW < 100:
+    elif 60 <= WPM and WPM < 100:
         quality = 'Medium level'
-    elif 100 <= WPW and WPW < 140:
+    elif 100 <= WPM and WPM < 140:
         quality = 'High level'
-    elif WPW >= 140:
+    elif WPM >= 140:
         quality = 'professional level'
     print(f'Your level : {quality}')
+    print(f'Accuracy : {Accuracy}%')
+    if timing < 60:
+        print(f'Your time : {round(timing, 2)}s')
+    else:
+        print(f'Your time : {round(timing/60, 2)}p')
+    print(f'WPM (Word per minute) : {WPM}')
     print()
     print('Wrong word list : ')
     for word in wrong_dict:
-        print(f"'{word}' : '{wrong_dict[word]}'")
+        print('{:<10} : {:<12}'.format(word, wrong_dict[word]))
     print()
     input('Press an key board to continue !')
     
