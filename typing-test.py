@@ -59,7 +59,7 @@ def check(sample, user, timing):
     print()
     print('Wrong word list : ')
     for word in wrong_dict:
-        print('{:<10} : {:<12}'.format(word, wrong_dict[word]))
+        print('{:<15} -> {:<15}'.format(wrong_dict[word], word))
     print()
     input('Press an key board to continue !')
     
@@ -91,6 +91,36 @@ Sample :
     time_tying = end - start
     check(easy['ex' + str(sample)], typing, time_tying)
     
+def mode_normal():
+    countdown(5)
+    clear_output()
+    sample = random_sample()
+    print(f'''
+Sample :
+{normal['ex' + str(sample)]}
+    ''')
+    print('Typing section : ')
+    start = time.time()
+    typing = input()
+    end = time.time()
+    time_tying = end - start
+    check(normal['ex' + str(sample)], typing, time_tying)
+    
+def mode_hard():
+    countdown(5)
+    clear_output()
+    sample = random_sample()
+    print(f'''
+Sample :
+{hard['ex' + str(sample)]}
+    ''')
+    print('Typing section : ')
+    start = time.time()
+    typing = input()
+    end = time.time()
+    time_tying = end - start
+    check(hard['ex' + str(sample)], typing, time_tying)
+    
 while True:
     clear_output()
     print("""
@@ -108,11 +138,11 @@ Choose difficulty :
     elif choice == 2:
         clear_output()
         #mode normal
-        pass
+        mode_normal()
     elif choice == 3:
         clear_output()
         #mode hard
-        pass
+        mode_hard()
     elif choice == 4:
         break
 
